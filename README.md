@@ -22,7 +22,7 @@ For problems and their descriptions:
 
 2. Press CTRL + F on your keyboard or select the menu button in your browser, go to "Find..." or "Find in page" etc. depending on your browser and platform.
 
-3. Type your search string, which can be question number or part of question name.
+3. Type your search string, which can be question number or part of question name (without spaces).
 
 **LintCode solutions | Language : CPP**
 
@@ -30,4 +30,4 @@ For problems and their descriptions:
 
 2. Press CTRL + F on your keyboard or select the menu button in your browser, go to "Find..." or "Find in page" etc. depending on your browser and platform.
 
-3. Type your search string, which can be question number or part of question name.
+3. Type your search string, which can be question number or part of question name (without spaces).
