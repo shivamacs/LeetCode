@@ -4,7 +4,8 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-int maxProductKadaneType(vector<int>& nums) {
+// approach 1
+int maxProductUsingKadane(vector<int>& nums) {
     int positive = nums[0], negative = nums[0], overallMax = nums[0]; 
     
     for (int i = 1; i < nums.size(); i++) {
@@ -26,6 +27,25 @@ int maxProductKadaneType(vector<int>& nums) {
     return overallMax;
 }
 
+// approach 2
+int maxProductUsingPrefixSuffixProduct(vector<int>& nums) {
+    int n = nums.size(), prefixProd = 1, suffixProd = 1, maxProd = INT_MIN;
+    
+    for (int i = 0, j = n - 1; i < n, j >= 0; i++, j--) {
+        prefixProd = (nums[i] == 0) ? 1 : prefixProd * nums[i]; 
+        suffixProd = (nums[j] == 0) ? 1 : suffixProd * nums[j];
+        
+        maxProd = max({maxProd, 
+                        ((nums[i] == 0) ? INT_MIN : prefixProd), 
+                        ((nums[j] == 0) ? INT_MIN : suffixProd), 
+                        nums[i], 
+                        nums[j]}
+                        );
+    }
+    
+    return maxProd;
+}
+
 int main()
 {
     int n;
@@ -39,6 +59,6 @@ int main()
     for (int i = 0; i < n; i++)
         cin>>nums[i];
 
-    cout<<"Contiguous subarray with largest product using Kadane's type approach: "<<maxProductKadaneType(nums)<<endl;
-    //cout<<"Contiguous subarray with largest product using prefix and suffix product: "<<maxProductPrefixSuffix(nums)<<endl;
+    cout<<"Contiguous subarray with largest product using Kadane's type approach: "<<maxProductUsingKadane(nums)<<endl;
+    cout<<"Contiguous subarray with largest product using prefix and suffix product: "<<maxProductUsingPrefixSuffixProduct(nums)<<endl;
 }
