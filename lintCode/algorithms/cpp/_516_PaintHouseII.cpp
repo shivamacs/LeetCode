@@ -1,10 +1,6 @@
 /* Source - https://www.lintcode.com/problem/paint-house-ii/description/
    Author - Shivam Arora
 */
-/* Leetcode Premium -> 265. Paint House II
-   Lintcode -> 516. Paint House II
-   Pep -> Paint house - many colors
-*/
 #include <bits/stdc++.h>
 using namespace std;
 
