@@ -7,17 +7,14 @@ using namespace std;
 bool isLongPressedName(string name, string typed) {
     int i = 0, j = 0;
     
-    while (j < typed.length()) {
-        if (name[i] == typed[j]) {
+    while(j < typed.length()) {
+        if(i < name.length() && name[i] == typed[j]) {
             i++;
             j++;
-        }
-        
-        else {
-            if (typed[j] == typed[j - 1]) j++;
-            
-            else return false;
-        }
+        } else if(j > 0 && typed[j] == typed[j - 1])
+            j++;
+        else
+            return false;
     }
     
     if (i == name.length() && j == typed.length())
