@@ -5,21 +5,22 @@
 using namespace std;
 
 int maxChunksToSorted(vector<int>& arr) {
-    if (arr.size() == 1) return 1;
+    int n = arr.size();
+    int leftMax[n];
     
-    int n = arr.size(), chunks = 0;
-    vector<int> leftMax(n), rightMin(n);
+    leftMax[0] = arr[0];
     
-    leftMax[0] = arr[0], rightMin[n - 1] = arr[n - 1];
+    for (int i = 1; i < n; i++)
+        leftMax[i] = max(leftMax[i - 1], arr[i]);
     
-    for (int i = 1, j = n - 2; i < n, j >= 0; i++, j--) {
-            leftMax[i] = arr[i] > leftMax[i - 1] ? arr[i] : leftMax[i - 1];
-            rightMin[j] = arr[j] < rightMin[j + 1] ? arr[j] : rightMin[j + 1];
-    }
+    int rightMin = arr[n - 1], chunks = 0;
     
-    for (int i = 0; i < n - 1; i++)
-        if (leftMax[i] <= rightMin[i + 1])
+    for (int i = n - 2; i >= 0; i--) {
+        if (leftMax[i] <= rightMin)
             chunks++;
+        
+        rightMin = min(rightMin, arr[i]);
+    }
         
     return chunks + 1;
 }
