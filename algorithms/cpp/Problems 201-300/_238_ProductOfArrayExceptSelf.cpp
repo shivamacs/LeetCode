@@ -6,18 +6,18 @@ using namespace std;
 
 vector<int> productExceptSelf(vector<int>& nums) {
     int n = nums.size();
+    vector<int> result(n);
     
-    vector<int> productLeft(n), result(n);
-    int rProduct = 1;
-    
-    productLeft[0] = nums[0];
+    result[0] = nums[0];
     
     for (int i = 1; i < n; i++)
-        productLeft[i] = nums[i] * productLeft[i - 1];
+        result[i] = nums[i] * result[i - 1];
+    
+    int right = 1;
     
     for (int i = n - 1; i >= 0; i--) {
-        result[i] = (i == 0 ? 1 : productLeft[i - 1]) * rProduct;
-        rProduct *= nums[i];
+        result[i] = (i == 0 ? 1 : result[i - 1]) * right;
+        right *= nums[i];
     }
     
     return result;       
