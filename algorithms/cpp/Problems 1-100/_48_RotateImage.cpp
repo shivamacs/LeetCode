@@ -4,40 +4,24 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-void swap(int& a, int& b) {
-    int temp = a;
-    a = b;
-    b = temp;
-}
-
-void reverse(vector<vector<int>>& matrix, int row) {
-    int n = matrix.size();
-    
-    int s = 0, e = n - 1;
-    while (s <= e) {
-        swap(matrix[row][s], matrix[row][e]);
-        
-        s++;
-        e--;
-    }
+void swap(vector<vector<int>>& matrix, int x1, int y1, int x2, int y2) {
+    int temp = matrix[x1][y1];
+    matrix[x1][y1] = matrix[x2][y2];
+    matrix[x2][y2] = temp;
 }
 
 void rotate(vector<vector<int>>& matrix) {
-    int n = matrix.size();
+    int n = matrix.size(), m = matrix[0].size();
     
-    for (int i = 0; i < n; i++)
-        reverse(matrix, i);
+    for(int i = 0; i < n; i++) {
+        for(int j = i + 1; j < m; j++)
+            swap(matrix, i, j, j, i);
+    }    
     
-    for (int i = 0, j = n - 1; i < n, j >= 0; i++, j--) {
-        int r = n - 1, c = 0;
-        
-        while (r > i && c < j) {
-            swap(matrix[i][c], matrix[r][j]);
-            
-            r--;
-            c++;
-        }
-    }
+    for(int j = 0, k = m - 1; j < k; j++, k--) {
+        for(int i = 0; i < n; i++)
+            swap(matrix, i, j, i, k);
+    }   
 }
 
 int main()
