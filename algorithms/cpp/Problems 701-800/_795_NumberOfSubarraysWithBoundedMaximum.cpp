@@ -5,28 +5,21 @@
 using namespace std;
 
 int numSubarrayBoundedMax(vector<int>& A, int L, int R) {
-    int n = A.size(), start = 0, i = 0, len = 0, count = 0;
-    
-    while (i < n) {
-        if (A[i] >= L && A[i] <= R) {
-            len = i - start + 1;
-            count += len;
-        }
+    int n = A.size(), prevValid = 0, start = 0, ans = 0;
         
-        else { 
-            if (A[i] < L)
-                count += len;
-        
-            else if (A[i] > R) {
-                len = 0;
-                start = i + 1;
-            }
+    for(int i = 0; i < n; i++) {
+        if(A[i] >= L && A[i] <= R) {
+            ans += i - start + 1;
+            prevValid = i - start + 1;
+        } else if(A[i] < L)
+            ans += prevValid;
+        else if(A[i] > R) {
+            start = i + 1;
+            prevValid = 0;
         }
-            
-        i++;
     }
     
-    return count;
+    return ans;
 }
 
 int main()
