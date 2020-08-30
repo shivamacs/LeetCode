@@ -4,38 +4,46 @@
 #include<bits/stdc++.h>
 using namespace std;
 
+vector<int> nextGreaterElements(vector<int>& nums) {
+    int n = nums.size();
+    stack<int> st;
+    vector<int> result(n, -1);
+    
+    st.push(0);
+    
+    int i = 1;
+    
+    while(i < 2 * n) {
+        while(!st.empty() && nums[i % n] > nums[st.top()]) {
+            result[st.top()] = nums[i % n];
+            st.pop();
+        } 
+        
+        if(i < n)
+            st.push(i);
+        
+        i++;
+    }
+    
+    return result;
+}
+
 int main()
 {
-    int n, arr[n], ans[n];
+    int n;
     stack<int> s;
 
     cout<<"Enter array size: ";
     cin>>n;
+
+    vector<int> nums(n);
     cout<<"Enter elements for circular array: ";
-    for (int i=0;i<n;i++) {
-        cin>>arr[i];
-        ans[i] = -1;
-    }
+    for (int i=0;i<n;i++)
+        cin>>nums[i];
 
-    int i = 0, count = 1;
-    s.push(i);
-    ++i;
-
-    while(i < n && count <= 2)
-    {
-        while(!s.empty() && arr[i] > arr[s.top()]) {
-            if (ans[s.top()] == -1) ans[s.top()] = arr[i];
-            s.pop();
-        }
-        if (ans[i] == -1) s.push(i);
-        if (i == n-1) { 
-            i = -1;
-            count++;
-        }
-        ++i;
-    }
+    vector<int> result = nextGreaterElements(nums);
 
     cout<<"Next greater element array for circular array: ";
-    for (int i=0;i<n;i++) cout<<ans[i]<<" ";
+    for(int i=0;i<n;i++) cout<<result[i]<<" ";
     cout<<endl;
 }
