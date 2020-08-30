@@ -18,6 +18,7 @@ int longestOnes(vector<int>& A, int K) {
                     start++;
                 
                 start++;
+                z = K;
             }
         }
         
