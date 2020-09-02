@@ -4,37 +4,41 @@
 #include<bits/stdc++.h>
 using namespace std;
 
-vector<int> asteroidCollision(vector<int>& arr) {
-    int n = arr.size(), top;
-    bool flag;
-    stack<int> s;
-    vector<int> result;
+vector<int> asteroidCollision(vector<int>& asteroids) {
+    int n = asteroids.size();
+    stack<int> st;
     
-    for (int i=0;i<n;i++) {
-        flag = 1;
-        if (s.empty() || arr[i] >= 0) s.push(i);
-
-        else if (!s.empty() && arr[s.top()] < 0) s.push(i);
+    st.push(0);
+    
+    for(int i = 1; i < n; i++) {
+        int curr = i;
+        bool flag = true;
         
-        else if (!s.empty() && arr[i] < 0) {
-            if (abs(arr[i]) < abs(arr[s.top()])) continue;
-            while (!s.empty() && (arr[s.top()] >= 0 && abs(arr[i]) >= abs(arr[s.top()]))) {
-                top = s.top(); s.pop();
-                if (abs(arr[i]) == abs(arr[top])) {
-                    flag = 0; 
-                    break;
-                };
-            }
-            if (!s.empty() && (arr[s.top()] > 0 && abs(arr[i]) < abs(arr[s.top()]))) flag = 0;
-            if (flag == 1) if (s.empty() || arr[s.top()] < 0) s.push(i);
+        while(!st.empty() && asteroids[curr] < 0 && asteroids[st.top()] > 0) {
+            int top = st.top();
+            st.pop();
+            
+            if(abs(asteroids[curr]) == abs(asteroids[top])) {
+                flag = false;
+                break;
+            } else if(abs(asteroids[curr]) < abs(asteroids[top]))
+                curr = top;
         }
+            
+        if(flag)
+            st.push(curr);
     }
-
-    while(!s.empty()) {
-        result.insert(result.begin(), arr[s.top()]);
-        s.pop();
+    
+    vector<int>result(st.size());
+    
+    int i = result.size() - 1;
+    
+    while(!st.empty()) {
+        result[i] = asteroids[st.top()];
+        st.pop();
+        i--;
     }
-
+    
     return result;
 }
 
