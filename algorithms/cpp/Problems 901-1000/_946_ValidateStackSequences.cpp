@@ -5,38 +5,28 @@
 using namespace std;
 
 bool validateStackSequences (vector<int>& pushed, vector<int>& popped) {
-    int i = 0, j = 0, n = pushed.size();
-    stack<int> s;
-
-    while (i<n && j<n) {
-        if (pushed[i] != popped[j]) {
-            if (!s.empty() && s.top() == popped[j]) {
-                s.pop();
-                j++;
-            }
-            else {
-                s.push(pushed[i]);
-                i++;
-            }
-        }
-
-        else if (pushed[i] == popped[j]) {
+    int n = pushed.size(), i = 0, j = 0;
+    stack<int> st;
+    
+    while(i < n) {
+        if(!st.empty() && pushed[st.top()] == popped[j]) {
+            st.pop();
+            j++;
+        } else {
+            st.push(i);
             i++;
-            j++;
         }
     }
-
-    while (j<n) {
-        if (s.top() == popped[j]) {
-            s.pop();
-            j++;
-        }
-        else break;
+            
+    while(!st.empty()) {
+        if(popped[j] != pushed[st.top()])
+            return false;
+        
+        st.pop();
+        j++;
     }
-
-    if (s.empty() && j == n) return true;
-    else return false;
-
+                    
+    return (j == n);
 }
 
 int main()
