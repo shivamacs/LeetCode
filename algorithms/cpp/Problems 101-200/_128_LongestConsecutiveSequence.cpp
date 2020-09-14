@@ -5,35 +5,25 @@
 using namespace std;
 
 int longestConsecutiveUsingHashMap(vector<int>& nums) {
-    if (nums.empty()) return 0;
+    unordered_map<int, int> lenMap;
+    int longest = 0;
     
-    unordered_map<int, int> seqMap;
-    int start = 0, end = 0, maxSeqLen = 0;
-    
-    for (int i = 0; i < nums.size(); i++) {
-        if (seqMap.find(nums[i]) == seqMap.end()) {
-            seqMap[nums[i]]++;
+    for(int i = 0; i < nums.size(); i++) {       
+        int val = nums[i];
         
-            start = nums[i] - ((seqMap.find(nums[i] - 1) != seqMap.end()) ? seqMap[nums[i] - 1] : 0);
-            end = nums[i] + ((seqMap.find(nums[i] + 1) != seqMap.end()) ? seqMap[nums[i] + 1] : 0);
-
-            if (start != end) {
-                if (start == nums[i]) {
-                    seqMap[end] += seqMap[nums[i]];
-                    seqMap[start] = seqMap[end];
-                }
-
-                else {
-                    seqMap[start] += (end == nums[i]) ? seqMap[nums[i]] : seqMap[end] + seqMap[nums[i]];
-                    seqMap[end] = seqMap[start];
-                }
-            }
-                            
-            if (seqMap[end] > maxSeqLen) maxSeqLen = seqMap[end];
+        if(lenMap.find(val) == lenMap.end()) {
+            int left = lenMap.find(val - 1) != lenMap.end() ? lenMap[val - 1] : 0;
+            int right = lenMap.find(val + 1) != lenMap.end() ? lenMap[val + 1] : 0;
+            
+            lenMap[val] =  1 + left + right;
+            lenMap[val - left] = lenMap[val];
+            lenMap[val + right] = lenMap[val];
+            
+            longest = max(longest, lenMap[val]);
         }
     }
     
-    return maxSeqLen;
+    return longest;
 }
 
 int longestConsecutiveUsingHashSet(vector<int>& nums) {
