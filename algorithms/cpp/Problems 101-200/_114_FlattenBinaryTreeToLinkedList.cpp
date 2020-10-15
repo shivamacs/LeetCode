@@ -14,23 +14,34 @@ struct TreeNode {
     }
 };
 
-void flatten(TreeNode *root) {
-    if (root == NULL) return;
-
-    flatten(root->left);
-
-    if (root->left != NULL) {
-        TreeNode *temp1 = root->right;
-        TreeNode *temp2 = root->left;
-        root->right = temp2;
+TreeNode* helper(TreeNode* root) {
+    if(root == NULL)
+        return NULL;
+    
+    TreeNode* lTail = helper(root->left);
+    TreeNode* rTail = helper(root->right);
+    TreeNode* lHead = root->left;
+    TreeNode* rHead = root->right;
+    
+    if(lHead == NULL && rHead == NULL)
+        return root;
+    else if(lHead != NULL && rHead == NULL) {
+        root->right = lHead;
         root->left = NULL;
-
-        while (temp2->right != NULL) temp2 = temp2->right;
         
-        temp2->right = temp1;
-    }
+        return lTail;
+    } else if(lHead != NULL && rHead != NULL) {
+        root->right = lHead;
+        root->left = NULL;
+        lTail->right = rHead;
+        
+        return rTail;
+    } else
+        return rTail;
+}
 
-    flatten(root->right);
+void flatten(TreeNode* root) {
+    root = helper(root);
 }
 
 void displayFlattenedTree(TreeNode *root) {
