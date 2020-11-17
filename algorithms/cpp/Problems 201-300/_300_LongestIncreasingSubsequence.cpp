@@ -4,29 +4,32 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+// O(nlogn) approach
 int lengthOfLIS(vector<int>& nums) {
-    if (nums.size() == 0)
-        return 0;
+    int n = nums.size(), len = 0;
+    int lis[n];
+
+    memset(lis, 0, sizeof(lis));
     
-    int n = nums.size(), longIncSub = 1;
-    vector<int> dp(n);
-
-    dp[0] = 1;
-
-    for (int i = 1; i < n; i++) {
-        int subLen = 0;
-
-        for (int j = i - 1; j >= 0; j--) {
-            if (nums[i] > nums[j])
-                subLen = max(subLen, dp[j]);
+    for(int val : nums) {
+        int lo = 0, hi = len;
+        
+        while(lo < hi) {
+            int mid = lo + (hi - lo) / 2;
+            
+            if(lis[mid] < val)
+                lo = mid + 1;
+            else
+                hi = mid;
         }
-
-        dp[i] = subLen + 1;
-
-        longIncSub = max(longIncSub, dp[i]);
+        
+        lis[lo] = val;
+    
+        if(lo == len)
+            len++;
     }
-
-    return longIncSub;
+    
+    return len;
 }
 
 int main()
