@@ -5,23 +5,16 @@
 using namespace std;
 
 int maxSumTwoNoOverlap(vector<int>& A, int L, int M) {
-    int lMax, mMax, result;
-    vector<int> prefixSum(A.size());
-    
-    for(int i = 0; i < A.size(); i++) {
-        prefixSum[i] = (i == 0) ? A[i] : prefixSum[i - 1] + A[i];
-    }
-    
-    lMax = mMax = result = INT_MIN;
-    
-    for(int i = (L + M); i <= A.size(); i++) {
-        lMax = (i == (L + M)) ? prefixSum[L - 1] : max(lMax, prefixSum[i - M - 1] - prefixSum[i - L - M - 1]);
-        mMax = (i == (L + M)) ? prefixSum[M - 1] : max(mMax, prefixSum[i - L - 1] - prefixSum[i - L - M - 1]);
+    int n = A.size(), lMax = 0, mMax = 0, result = 0;
         
-        result = max({result, 
-                        prefixSum[i - 1] - prefixSum[i - L - 1] + mMax,
-                        prefixSum[i - 1] - prefixSum[i - M - 1] + lMax
-                    });
+    for(int i = 1; i < n; i++)
+        A[i] += A[i - 1];
+    
+    for(int i = (L + M) - 1; i < n; i++) {
+        lMax = max(lMax, i == (L + M) - 1 ? A[i - M] : A[i - M] - A[i - (L + M)]);
+        mMax = max(mMax, i == (L + M) - 1 ? A[i - L] : A[i - L] - A[i - (L + M)]);
+        
+        result = max(result, max(A[i] - A[i - M] + lMax, A[i] - A[i - L] + mMax));
     }
     
     return result;
