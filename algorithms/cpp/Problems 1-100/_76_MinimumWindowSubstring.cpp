@@ -4,41 +4,45 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-#define MAX 256
-
 string smallestWindowForSubstring(string s, string t) {
-    if (s.length() < t.length()) return "-1";
+    int n = s.length(), m = t.length(), matched = 0, minLen = INT_MAX, start = 0, beg = 0;
+    int freq[256];
+    bool patt[256];
     
-    int textFreq[MAX] = {0}, windowFreq[MAX] = {0};
-    string window, minWindow = "";
-    int winStart = 0, matchCount = 0, minLength = INT_MAX;
-
-    int sLen = s.length(), tLen = t.length();
-
-    for (int i = 0; i < tLen; i++)
-        textFreq[t[i]]++;
-
-    for (int i = 0; i < sLen; i++) {
-        windowFreq[s[i]]++;
+    memset(freq, 0, sizeof(freq));
+    memset(patt, false, sizeof(patt));
     
-        if (textFreq[s[i]] != 0 && textFreq[s[i]] >= windowFreq[s[i]]) matchCount++;
-
-        if (matchCount == tLen) {
-            while (textFreq[s[winStart]] < windowFreq[s[winStart]] || textFreq[s[winStart]] == 0) {
-                if (textFreq[s[winStart]] < windowFreq[s[winStart]]) windowFreq[s[winStart]]--;
-                winStart++;
-            }
-
-            window = s.substr(winStart, i - winStart + 1);
+    for(int i = 0; i < m; i++) {
+        freq[t[i]]++;
+        patt[t[i]] = true;
+    }
         
-            if (window.length() < minLength) {
-                minWindow = window;
-                minLength = window.length();
+    for(int i = 0; i < n; i++) {
+        if(patt[s[i]]) {
+            freq[s[i]]--;
+            
+            if(freq[s[i]] >= 0)
+                matched++;
+        }
+        
+        while(matched == m) {
+            if(i - start + 1 < minLen) {
+                minLen = i - start + 1;
+                beg = start;
             }
+            
+            if(patt[s[start]]) {
+                if(freq[s[start]] == 0)
+                    matched--;
+                
+                freq[s[start]]++;
+            }
+            
+            start++;
         }
     }
-
-    return minWindow != "" ? minWindow : "-1";
+    
+    return minLen == INT_MAX ? "" : s.substr(beg, minLen);
 }
 
 int main()
