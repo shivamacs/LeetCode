@@ -4,46 +4,50 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-#define MAX 256
-
 vector<int> findAnagrams(string s, string p) {
-    if (s.length() < p.length()) return {};
-    if (s == p) return {0};
-
-    vector<int> anagrams;
-
-    int patFrequency[MAX] = {0}, winFrequency[MAX] = {0};
-    int sLen = s.length(), pLen = p.length();
-    int matchCount = 0;
+    int n = s.length(), m = p.length(), matched = 0, count = 0;
+    int freq[26];
+    bool patt[26];
+    vector<int> result;
     
-    for (int i = 0; i < pLen; i++)
-        patFrequency[p[i]]++;
+    memset(freq, 0, sizeof(freq));
+    memset(patt, false, sizeof(patt));
     
-    for (int i = 0; i < pLen; i++) {
-        winFrequency[s[i]]++;
+    for(int i = 0; i < m; i++) {
+        freq[p[i] - 'a']++;
         
-        if (patFrequency[s[i]] >= winFrequency[s[i]])
-            matchCount++;
-    }
-
-    if (pLen == sLen && matchCount == pLen) {
-        anagrams.push_back(0);
-        return anagrams;
+        if(patt[p[i] - 'a'] == false) {
+            count++;
+            patt[p[i] - 'a'] = true;
+        }
     }
     
-    for (int i = pLen; i < sLen; i++) {
-        if (matchCount == pLen) anagrams.push_back(i - pLen);
+    for(int i = 0; i < n; i++) {
+        int ch = s[i] - 'a';
         
-        winFrequency[s[i]]++;
-        if (patFrequency[s[i]] >= winFrequency[s[i]]) matchCount++;
+        if(patt[ch]) {
+            freq[ch]--;
+            
+            if(freq[ch] == 0)
+                matched++;
+        }
         
-        --winFrequency[s[i - pLen]];
-        if (patFrequency[s[i - pLen]] > winFrequency[s[i - pLen]]) matchCount--;
+        if(matched == count)
+            result.push_back(i - m + 1);
+        
+        if(i >= m - 1) {
+            int temp = s[i - m + 1] - 'a';
+            
+            if(patt[temp]) {
+                if(freq[temp] == 0)
+                    matched--;
+                
+                freq[temp]++;
+            }
+        }
     }
-    
-    if (matchCount == pLen) anagrams.push_back(sLen - pLen);
-    
-    return anagrams;
+                    
+    return result;
 }
 
 int main()
