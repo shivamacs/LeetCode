@@ -4,51 +4,32 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-struct Interval {
-    int s, e;
-
-    Interval(int a, int b) {
-        s = a;
-        e = b;
-    }
-};
-
-static bool comparator(Interval i1, Interval i2) {
-    return i1.s < i2.s;
+static bool comparator(vector<int>& a, vector<int>& b) {
+    return a[0] < b[0];
 }
 
 vector<vector<int>> merge(vector<vector<int>>& intervals) {
-    if (intervals.size() == 0)
-        return {};
-    
-    vector<Interval> pairs;
-    
-    for(int i = 0; i < intervals.size(); i++)
-        pairs.push_back(Interval(intervals[i][0], intervals[i][1]));
-    
-    sort(pairs.begin(), pairs.end(), comparator);
-
-    stack<Interval> stack;
+    int n = intervals.size();
     vector<vector<int>> result;
-
-    stack.push(Interval(pairs[0].s, pairs[0].e));
-
-    for(int i = 1; i < pairs.size(); i++) {
-        Interval curr = pairs[i];
-
-        if(curr.s > stack.top().e) 
-            stack.push(curr);
-        else
-            stack.top().e = max(stack.top().e, curr.e);
+    
+    sort(intervals.begin(), intervals.end(), comparator);
+    
+    int start = intervals[0][0], end = intervals[0][1];
+    
+    for(int i = 1; i < n; i++) {
+        int s = intervals[i][0], e = intervals[i][1];
+        
+        if(s <= end)
+            end = max(end, e);
+        else {
+            result.push_back({start, end});
+            start = s;
+            end = e;
+        }
     }
-
-    while(!stack.empty()) {
-        result.push_back({stack.top().s, stack.top().e});
-        stack.pop();
-    }
-
-    reverse(result.begin(), result.end());
-
+    
+    result.push_back({start, end});
+    
     return result;
 }
 
