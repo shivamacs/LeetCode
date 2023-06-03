@@ -23,6 +23,8 @@ For problems and their descriptions:
 [Problems 1301 - 1400](./algorithms/cpp/Problems%201301-1400)<br>
 [Problems 1401 - 1500](./algorithms/cpp/Problems%201401-1500)<br>
 [Problems 1501 - 1600](./algorithms/cpp/Problems%201501-1600)<br>
+[Problems 1801 - 1900](./algorithms/cpp/Problems%201801-1900)<br>
+[Problems 2001 - 2100](./algorithms/cpp/Problems%202001-2100)<br>
 
 2. Press CTRL + F on your keyboard or select the menu button in your browser, go to "Find..." or "Find in page" etc. depending on your browser and platform.
 
